@@ -1,3 +1,6 @@
+import sys
+
+
 def read_file(file_path):
     try:
         with open(file_path) as file:
@@ -21,6 +24,9 @@ def moves(array):
 
 
 if __name__ == "__main__":
-    file_path = input("Введите путь до файла ")
+    if len(sys.argv) != 2:
+        print("Укажите путь до файла")
+        sys.exit(1)
+    file_path = sys.argv[1]
     array = read_file(file_path)
     print(moves(array))

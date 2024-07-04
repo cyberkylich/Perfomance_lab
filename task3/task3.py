@@ -1,19 +1,19 @@
 import json
+import sys
 
 
 def read_files(values_path, tests_path):
     try:
-        with open(values_path, 'r') as file:
+        with open(values_path) as file:
             values_data = json.load(file)
     except FileNotFoundError:
         print(f"Файл {values_path} не найден")
     try:
-        with open(tests_path, 'r') as file:
+        with open(tests_path) as file:
             tests_data = json.load(file)
     except FileNotFoundError:
         print(f"Файл {tests_path} не найден")
-    else:
-        return values_data, tests_data
+    return values_data, tests_data
 
 
 def update_values(tests):
@@ -28,9 +28,14 @@ def update_values(tests):
 
 
 if __name__ == "__main__":
-    values_path = input("Введите путь до values.json ")
-    tests_path = input("Введите путь до tests.json ")
-    report_path = input("Введите путь куда сохранить файл report.json ")
+    if len(sys.argv) != 4:
+        print(
+            "Укажите три файла в качестве аргументов командной строки. Первый аргумент - values.json, второй - "
+            "tests.json, третий - куда сохранить результат report.json")
+        sys.exit(1)
+    values_path = sys.argv[1]
+    tests_path = sys.argv[2]
+    report_path = sys.argv[3]
     values_data, tests_data = read_files(values_path, tests_path)
     values_dict = {item['id']: item['value'] for item in values_data['values']}
     update_values(tests_data['tests'])
